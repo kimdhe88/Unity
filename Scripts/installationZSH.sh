@@ -45,7 +45,7 @@ main(){
 
 InstallrationZsh(){
 
-  if [ -x $(command -v zsh) ];then
+  if Exists zsh;then
     echo "zsh is already installed."
     return ${true}
   else
@@ -64,6 +64,11 @@ InstallrationZsh(){
   else
     return ${false}
   fi
+}
+
+Exists()
+{
+  command -v "$1" >/dev/null 2>&1
 }
 
 InstallCentOS(){
