@@ -25,7 +25,7 @@ init(){
     isRoot=${true}
   else
     isRoot=${false}
-    printf "Enter the password for the account for the sudo command.";read passwd
+
   fi
 
   return ${true}
@@ -49,6 +49,10 @@ InstallrationZsh(){
     echo "zsh is already installed."
     return ${true}
   else
+    if [ ${isRoot} -eq "${false}" ];then
+      printf "Enter the password for the account for the sudo command. : ";read passwd
+    fi
+
     case ${osVersion} in
       CentOS)
       InstallCentOS
