@@ -12,7 +12,7 @@ main(){
 }
 
 IsInstalled(){
-  if [ -x (command -v zsh) ];then
+  if [ -x $(command -v zsh) ];then
     return ${true}
   else
     return ${false}
