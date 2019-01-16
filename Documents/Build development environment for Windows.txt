@@ -1,0 +1,40 @@
+# Git Client 설치
+https://git-scm.com/download/win
+
+# python 설치
+https://www.python.org/downloads/windows/
+설치 후 시스템 환경변수에 Python 설치 경로와 Script 경로 추가
+%USERPROFILE%\AppData\Local\Programs\Python\PythonXX
+%USERPROFILE%\AppData\Local\Programs\Python\PythonXX\Scripts
+
+# AWS Client 설치(python 설치 후 진행)
+windows terminal 에서 다음 명령어로 설치
+pip install awscli
+
+
+# Git config 설정
+windows terminal에서 실행
+$ git config --global credential.helper "!aws codecommit credential-helper $@"
+$ git config --global credential.UseHttpPath true
+
+# AWS config 설정
+AWS Management Console 홈페이지 접속 후 로그인
+https://aws.amazon.com/ko/console/
+- [서비스] - [IAM] 접속
+- AWSCodeCommitFullAccess 권한을 가진 사용자 생성
+- [사용자] - [사용자 클릭] - [보안 자격 증명] - [엑세스 키 만들기]
+- [엑세스 키]와 [비밀 엑세스 키] 저장 (비밀 엑세스 키는 1회성 데이터이므로 분실 시 키 새로 발급 필요)
+
+windows terminal에서 실행
+$ aws configure
+AWS Access Key ID [None]: [엑세스 키 입력]
+AWS Secret Access Key [None]: [비밀 엑세스 키] 입력
+Default region name [None]: us-east-2
+Default output format [None]: json
+
+
+# IDE 설치
+# sourcetree
+https://www.sourcetreeapp.com/
+# atom
+https://atom.io/

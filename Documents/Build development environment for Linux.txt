@@ -1,0 +1,132 @@
+#######################################################################
+# Git Client 2.X 버전 설치
+#######################################################################
+
+- RHEL/CentOS 7 에는 git 1.8, CentOS 6 은 1.7 이 포함되어 있지만 버전이 낮아서 최신 버전의 gitlab 이나 Bitbucket 등을 설치할 수 없다.
+- gitlab 을 설치하려면 git 1.8 이 필요하므로 yum repository 를 제공하는 The PUIAS Computational repository 에서 최신 git 버전을 다운로드 할 수 있다.
+
+#CentOS 7
+rpm -Uvh http://opensource.wandisco.com/centos/7/git/x86_64/wandisco-git-release-7-2.noarch.rpm
+#CentOS 6
+rpm -Uvh http://opensource.wandisco.com/centos/6/git/x86_64/wandisco-git-release-6-1.noarch.rpm
+
+- yum 또는 apt-get으로 실행
+- yum(CentOS)
+yum --enablerepo=WANdisco-git --disablerepo=base,updates install -y git nss curl libcurl curl-devel expat-devel gettext-devel  openssl-devel zlib-devel
+- apt-get(Ubuntu)
+apt-get install libcurl4-gnutls-dev libexpat1-dev gettext  libz-dev libssl-dev git
+
+
+#######################################################################
+# Vue Express Node 통합 프로젝트 환경 만들기
+#######################################################################
+# 참고 블로그
+https://blog.hanumoka.net/2018/11/13/vue-20181113-vue-how-to-make-vue-express-project/
+
+- 최상위 폴더는 프로젝트 폴더(vue_express). 하위에 express 프로젝트 폴더 [backend], vue(webpack) 프로젝트 폴더 [prontend] 폴더 생성.
+- vue를 webpack으로 빌드 하여 그 결과물을 express 프로젝트의 public에 배포한다. 그리고 express의 router가 빌드된 vue 프로젝트의 vue router와 연동시킨다.
+$ mkdir ~/vue_express
+$ mkdir ~/vue_express/backend
+$ mkdir ~/vue_express/prontend
+
+01. vue 프로젝트로 frontend 폴더 생성하기
+- 프로젝트 폴더로 이동
+- npm을 이용해 vue client를 설치하고 webpack 기반으로 vue 프로젝트 생성
+
+$ cd ~/vue_express
+$ npm install -g vue-cli
+$ vue init webpack frontend
+
+- 프로젝트 생성 시 vue-router를 반드시 설치해주어야 한다.
+- 설치 후 frontend 폴더로 이동하여 동작하는지 확인
+- 기본 포트는 8080 포트 변경 시 프로젝트 폴더 내 ./vue.config.js 파일에서 수정
+$ vi cd ~/vue_express/prontend/vue.config.js
+$ cd ~/vue_express/prontend
+# npm run dev
+
+- 웹 페이지에 접속하여 동작하는지 확인.
+http://locallhost:8080
+
+
+02. vue 프로젝트에서 Vue-router 테스트하기
+
+- ~/vue_express/frontend/src/components 폴더에 HellowWorld.vue 파일을 삭제
+- LoginPage.vue, IndexPage.vue 파일 새로 생성.
+
+$ mkdir -p ~/vue_express/frontend/src/components
+$ vi LoginPage.vue
+<template lang="html">
+
+<h1>this is login page!!</h1>
+
+</template>
+
+<script>
+export default {
+}
+</script>
+
+<style lang="css">
+</style>
+
+$ vi IndexPage.vue
+<template lang="html">
+
+<h1>this is index page!!</h1>
+
+</template>
+
+<script>
+export default {
+}
+</script>
+
+<style lang="css">
+</style>
+
+- ~/vue_express/frontend/src/router/index.js 파일내용 수정
+- router 폴더는 vue init webpack 명령어로 vue 프로젝트를 생성할때 Vue-router 를 설치하면 자동으로 생성된다.
+
+$ vi ~/vue_express/frontend/src/router/index.js
+import Vue from 'vue'
+import Router from 'vue-router'
+
+Vue.use(Router)
+
+import IndexPage from '@/components/IndexPage'
+import LoginPage from '@/components/LoginPage'
+
+
+export default new Router({
+  mode: 'history',
+  routes: [
+    {
+      path: '/',
+      name: 'IndexPage',
+      component: IndexPage
+    },
+    {
+      path: '/loginPage',
+      name: 'LoginPage',
+      component: LoginPage
+    }
+  ]
+})
+
+
+-  http://localhost:8080/ 와 http://localhost:8080/loginPage 에 접속해서 라우팅 되는지 확인한다.
+
+
+03. Express 프로젝트로 backend폴더 생성하기
+
+
+
+
+
+
+
+
+
+
+
+1
