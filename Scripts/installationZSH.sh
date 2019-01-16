@@ -7,7 +7,7 @@ init(){
 }
 
 main(){
-  rstcode=IsInstalled
+  IsInstalled;rstcode=$?
   echo "zsh install code is : ${rstcode}"
 }
 
