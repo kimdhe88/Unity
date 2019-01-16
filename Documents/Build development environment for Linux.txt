@@ -54,7 +54,8 @@ http://locallhost:8080
 - LoginPage.vue, IndexPage.vue 파일 새로 생성.
 
 $ mkdir -p ~/vue_express/frontend/src/components
-$ vi LoginPage.vue
+$ vi ~/vue_express/frontend/src/components/LoginPage.vue
+-------------------------------------------------------------
 <template lang="html">
 
 <h1>this is login page!!</h1>
@@ -68,8 +69,10 @@ export default {
 
 <style lang="css">
 </style>
+-------------------------------------------------------------
 
-$ vi IndexPage.vue
+$ vi ~/vue_express/frontend/src/components/IndexPage.vue
+-------------------------------------------------------------
 <template lang="html">
 
 <h1>this is index page!!</h1>
@@ -83,11 +86,13 @@ export default {
 
 <style lang="css">
 </style>
+-------------------------------------------------------------
 
 - ~/vue_express/frontend/src/router/index.js 파일내용 수정
 - router 폴더는 vue init webpack 명령어로 vue 프로젝트를 생성할때 Vue-router 를 설치하면 자동으로 생성된다.
 
 $ vi ~/vue_express/frontend/src/router/index.js
+-------------------------------------------------------------
 import Vue from 'vue'
 import Router from 'vue-router'
 
@@ -112,7 +117,7 @@ export default new Router({
     }
   ]
 })
-
+-------------------------------------------------------------
 
 -  http://localhost:8080/ 와 http://localhost:8080/loginPage 에 접속해서 라우팅 되는지 확인한다.
 
