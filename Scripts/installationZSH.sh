@@ -25,45 +25,29 @@ init(){
     isRoot=${true}
   else
     isRoot=${false}
-
+    printf "Enter the password for the account for the sudo command. : ";read passwd
   fi
 
   return ${true}
 }
 
-main(){
-  init;rstcode=$?
-  if [ ${rstcode} -eq ${false} ]; then
-    return
-  fi
-
-  InstallrationZsh;rstcode=$?
-  if [ ${rstcode} -eq ${false} ]; then
-    return
-  fi
-}
-
-InstallrationZsh(){
+InstallationZsh(){
 
   if Exists zsh;then
     echo "zsh is already installed."
     return ${true}
   else
-    if [ ${isRoot} -eq "${false}" ];then
-      printf "Enter the password for the account for the sudo command. : ";read passwd
-    fi
-
     case ${osVersion} in
       CentOS)
-      InstallCentOS
+      InstallPackageCentOS zsh
       ;;
       Ubuntu)
-      InstallUbuntu
+      InstallPackageUbuntu zsh
       ;;
     esac
   fi
 
-  if [ -x $(command -v zsh) ];then
+  if Exists zsh;then
     return ${true}
   else
     return ${false}
@@ -75,20 +59,49 @@ Exists()
   command -v "$1" >/dev/null 2>&1
 }
 
-InstallCentOS(){
+InstallPackageCentOS(){
+  packageName=${1}
   if [ ${isRoot} -eq "${true}" ];then
-    yum install -y zsh
+    yum install -y ${packageName}
   else
-    echo ${passwd} | sudo -S yum install -y zsh
+    echo ${passwd} | sudo -S yum install -y ${packageName}
   fi
 }
 
-InstallUbuntu(){
+InstallPackageUbuntu(){
   if [ ${isRoot} -eq "${true}" ];then
-    apt-get install -y zsh
+    apt-get install -y ${packageName}
   else
-    apt-get ${passwd} | sudo -S yum install -y zsh
+    apt-get ${passwd} | sudo -S yum install -y ${packageName}
   fi
+}
+
+InstallationOhMyZsh(){
+  echo ${passwd} | sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
+}
+
+GetProfiles(){
+  curl -L -o ${HOME}/.zshrc https://raw.githubusercontent.com/kimdhe88/Utility/master/Profiles/.zshrc
+  curl -L -o installZSH.${HOME}/.aliases https://raw.githubusercontent.com/kimdhe88/Utility/master/Profiles/.aliases
+}
+
+main(){
+  init;rstcode=$?
+  if [ ${rstcode} -eq ${false} ]; then
+    return
+  fi
+
+  InstallationZsh;rstcode=$?
+  if [ ${rstcode} -eq ${false} ]; then
+    echo "Zsh Installation failed"
+    return
+  fi
+
+  InstallationOhMyZsh
+
+  GetProfiles
+
+  source ${HOME}/.zshrc
 }
 
 main
