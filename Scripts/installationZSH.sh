@@ -82,7 +82,7 @@ InstallationOhMyZsh(){
 
 GetProfiles(){
   curl -L -o ${HOME}/.zshrc https://raw.githubusercontent.com/kimdhe88/Utility/master/Profiles/.zshrc
-  curl -L -o installZSH.${HOME}/.aliases https://raw.githubusercontent.com/kimdhe88/Utility/master/Profiles/.aliases
+  curl -L -o ${HOME}/.aliases https://raw.githubusercontent.com/kimdhe88/Utility/master/Profiles/.aliases
 }
 
 main(){
