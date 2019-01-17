@@ -16,6 +16,44 @@ yum --enablerepo=WANdisco-git --disablerepo=base,updates install -y git nss curl
 - apt-get(Ubuntu)
 apt-get install libcurl4-gnutls-dev libexpat1-dev gettext  libz-dev libssl-dev git
 
+#######################################################################
+# node.js, npm 설치 및 업그레이드
+#######################################################################
+# 설치 순서 nvm -> node/npm
+# nvm : Node Version Manager
+# npm : Node Package Manager
+
+01. nvm 설치
+- 공식 사이트(https://github.com/creationix/nvm)에서 curl 또는 weget으로 설치
+- curl 으로 설치
+$ curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.34.0/install.sh | bash
+ - wegit 으로 설치
+$ wget -qO- https://raw.githubusercontent.com/creationix/nvm/v0.33.11/install.sh | bash
+
+02. 설정파일 생성 및 쉘 기본 스크립트에 포함.
+$ vi ${HOME}/.nvm_profile
+-------------------------------------------------------------
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+-------------------------------------------------------------
+
+- zsh
+$ echo "source \${HOME}/.nvm_profile" >> ${HOME}/.zshrc
+$ source ${HOME}/.zshrc
+
+- bash
+$ echo "source \${HOME}/.nvm_profile" >> ${HOME}/.bash_profile
+$ source ${HOME}/.bash_profile
+
+03. node.js 설치
+- node.js 홈페이지(https://nodejs.org/ko/)에서 최신 릴리즈 확인 후 nvm으로 다운로드.
+$ nvm install v10.15.0
+$ nvm use v10.15.0
+$ echo "nvm use v10.15.0" >> ${HOME}/.nvm_profile
+$ source ${HOME}/.nvm_profile
+
+
 
 #######################################################################
 # Vue Express Node 통합 프로젝트 환경 만들기
@@ -25,36 +63,54 @@ https://blog.hanumoka.net/2018/11/13/vue-20181113-vue-how-to-make-vue-express-pr
 
 - 최상위 폴더는 프로젝트 폴더(vue_express). 하위에 express 프로젝트 폴더 [backend], vue(webpack) 프로젝트 폴더 [prontend] 폴더 생성.
 - vue를 webpack으로 빌드 하여 그 결과물을 express 프로젝트의 public에 배포한다. 그리고 express의 router가 빌드된 vue 프로젝트의 vue router와 연동시킨다.
-$ mkdir ~/vue_express
-$ mkdir ~/vue_express/backend
-$ mkdir ~/vue_express/prontend
+export PROJECT_HOME=${HOME}/lab/projects/monitoring
+
+$ mkdir -p ${PROJECT_HOME}
+$ mkdir -p ${PROJECT_HOME}/backend
+$ mkdir -p ${PROJECT_HOME}/frontend
 
 01. vue 프로젝트로 frontend 폴더 생성하기
 - 프로젝트 폴더로 이동
 - npm을 이용해 vue client를 설치하고 webpack 기반으로 vue 프로젝트 생성
 
-$ cd ~/vue_express
+$ cd ${PROJECT_HOME}
 $ npm install -g vue-cli
 $ vue init webpack frontend
+----------------------------------------------------------------------------------------------
+? Target directory exists. Continue? Yes
+? Project name frontend
+? Project description A Vue.js project
+? Author
+? Vue build standalone
+? Install vue-router? Yes
+? Use ESLint to lint your code? No
+? Set up unit tests No
+? Setup e2e tests with Nightwatch? No
+? Should we run `npm install` for you after the project has been created? (recommended) npm
+----------------------------------------------------------------------------------------------
 
 - 프로젝트 생성 시 vue-router를 반드시 설치해주어야 한다.
 - 설치 후 frontend 폴더로 이동하여 동작하는지 확인
-- 기본 포트는 8080 포트 변경 시 프로젝트 폴더 내 ./vue.config.js 파일에서 수정
-$ vi cd ~/vue_express/prontend/vue.config.js
-$ cd ~/vue_express/prontend
-# npm run dev
+- default host : localhost, port : 8080 이므로 테스트를 위해 정보 수정 필요
+- config 파일 경로 : ${PROJECT_HOME}/frontend/config/index.js 파일에서 수정
+---------------------------------------------------------------
+host:'0.0.0.0', // can be overwritten by process.env.HOST
+port: 6293, // can be overwritten by process.env.PORT, if port is in use, a free one will be determined
+---------------------------------------------------------------
+$ vi ${PROJECT_HOME}/frontend/config/index.js
+$ cd ${PROJECT_HOME}/frontend
+$ npm run dev
 
 - 웹 페이지에 접속하여 동작하는지 확인.
-http://locallhost:8080
-
+http://192.168.10.101:6293
 
 02. vue 프로젝트에서 Vue-router 테스트하기
 
 - ~/vue_express/frontend/src/components 폴더에 HellowWorld.vue 파일을 삭제
 - LoginPage.vue, IndexPage.vue 파일 새로 생성.
 
-$ mkdir -p ~/vue_express/frontend/src/components
-$ vi ~/vue_express/frontend/src/components/LoginPage.vue
+//$ mkdir -p ~/vue_express/frontend/src/components
+$ vi ${PROJECT_HOME}/frontend/src/components/LoginPage.vue
 -------------------------------------------------------------
 <template lang="html">
 
@@ -71,7 +127,7 @@ export default {
 </style>
 -------------------------------------------------------------
 
-$ vi ~/vue_express/frontend/src/components/IndexPage.vue
+$ vi ${PROJECT_HOME}/frontend/src/components/IndexPage.vue
 -------------------------------------------------------------
 <template lang="html">
 
@@ -88,10 +144,10 @@ export default {
 </style>
 -------------------------------------------------------------
 
-- ~/vue_express/frontend/src/router/index.js 파일내용 수정
+- ${PROJECT_HOME}/frontend/src/router/index.js 파일내용 수정
 - router 폴더는 vue init webpack 명령어로 vue 프로젝트를 생성할때 Vue-router 를 설치하면 자동으로 생성된다.
 
-$ vi ~/vue_express/frontend/src/router/index.js
+$ vi ${PROJECT_HOME}/frontend/src/router/index.js
 -------------------------------------------------------------
 import Vue from 'vue'
 import Router from 'vue-router'
@@ -119,15 +175,33 @@ export default new Router({
 })
 -------------------------------------------------------------
 
--  http://localhost:8080/ 와 http://localhost:8080/loginPage 에 접속해서 라우팅 되는지 확인한다.
+- http://192.168.10.101:6293 와 http://192.168.10.101:6293/loginPage 에 접속해서 라우팅 되는지 확인한다.
 
 
 03. Express 프로젝트로 backend폴더 생성하기
+- 먼저 프로젝트 홈으로 이동 후 npm으로 express-generator를 설치 후 express 프로젝트 [backend]를 생성한다.
+$ cd ${PROJECT_HOME}
+$ npm install express-generator -g
+$ express --view=pug backend
 
+- 설치가 완료됐으면 순차적으로 다음 명령어를 수행한다.
+- change directory:
+$ cd ${PROJECT_HOME}/backend
 
+- install dependencies:
+$ npm install
 
+- 포트 변경은 ${PROJECT_HOME}/backend/bin/www 파일에서 수정
+- run the app:
+$ vi ${PROJECT_HOME}/backend/bin/www
+----------------------------------------------------------------------
+var port = normalizePort(process.env.PORT || '3000');
+app.set('port', port);
+----------------------------------------------------------------------
+$ DEBUG=backend:* npm start
 
-
+- 테스트 페이지 접속
+http://192.168.10.101:3000/
 
 
 

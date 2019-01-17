@@ -1,0 +1,36 @@
+export NVM_DIR="$HOME/.nvm"
+
+Excutable()
+{
+  command -v "$1" >/dev/null 2>&1
+}
+
+GetVersions(){
+  nodeVersions=`node -v`
+  npmVersions=`npm -v`
+}
+
+ViewVersions(){
+	echo "node.js version : ${nodeVersions}"
+	echo "npm version : ${npmVersions}"
+}
+
+Main(){
+  if Excutable nvm;then
+    ViewVersions
+  else
+    [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+    [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+    GetVersions
+    ViewVersions
+  fi
+}
+
+viewnodes(){
+  versionList=`ls ${NVM_DIR}/versions/node`
+  for version in ${versionList};do
+    echo "${version}"
+  done
+}
+
+Main
