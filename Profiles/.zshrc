@@ -1,7 +1,3 @@
-useAlias=1
-usePetra=0
-useNvm=0
-
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
@@ -101,17 +97,9 @@ source $ZSH/oh-my-zsh.sh
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
-customProfileDir=${HOME}/.custom_profiles
-if [ ${useAlias} -eq "1" ]; then
-    source ${customProfileDir}/.aliases
-fi
 
-if [ ${usePetra} -eq "1" ]; then
-  if [ -f "${HOME}/_profile" ];then
-    source ${HOME}/_profile
-  fi
-fi
 
-if [ ${useNvm} -eq "1" ]; then
-    source ${customProfileDir}/.nvm_profile
+customProfileManager=${HOME}/.custom_profiles/custom_profile_manager
+if [ -f "${customProfileManager}" ];then
+  source ${customProfileManager}
 fi

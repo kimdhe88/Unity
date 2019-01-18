@@ -1,0 +1,2 @@
+profileDirectory=${HOME}/.custom_profiles
+nodeDirectory=${profileDirectory}/node

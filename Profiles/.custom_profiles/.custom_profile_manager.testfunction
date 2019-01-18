@@ -1,0 +1,37 @@
+source ${toolsPath}
+
+init(){
+  return ${success}
+}
+
+showprofile(){
+  return ${success}
+}
+
+successfunction(){
+  echo "successfunction"
+  return ${success}
+}
+
+warnningfunction(){
+  echo "warnningfunction"
+  return ${warnning}
+}
+
+errorfunction(){
+  echo "errorfunction"
+  return ${error}
+}
+
+main(){
+   init
+   echo "success : ${success}"
+   echo "success : ${warnning}"
+   echo "success : ${error}"
+   function_call successfunction
+   function_call warnningfunction
+   function_call errorfunction
+   function_call successfunction
+}
+
+main

@@ -1,0 +1,9 @@
+scriptName=$(basename ${0})
+customProfileDirectory="$(dirname -- "$(readlink -f -- "${0}")")"
+toolsPath=${customProfileDirectory}/.tools
+export customProfileDirectory toolsPath
+source ${toolsPath}
+
+testfunction(){
+  sh ${customProfileDirectory}/.$(basename ${0}).testfunction
+}

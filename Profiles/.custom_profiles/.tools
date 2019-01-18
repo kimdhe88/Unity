@@ -1,0 +1,72 @@
+# variables
+success=0
+warnning=1
+error=2
+
+# functions
+function_call(){
+	functionName=${1}
+	${functionName};rstcode=$?
+	case ${rstcode} in
+		${warnning} )
+			warnning_print "\033[92;1m${functionName}\033[m function sent a warning."
+			;;
+		${error} )
+			error_print "An error occurred in the \033[92;1m${functionName}\033[m function."
+			exit
+			;;
+	esac
+}
+
+showcolor(){
+	for (( i = 1; i <= 9; i++ )); do
+		color=${i}
+		echo -e "${i} \033[${color}m(Error)\033[m"
+	done
+	for (( i = 30; i <= 47; i++ )); do
+		color=${i}
+		echo -e "${i} \033[${color}m(Error)\033[m"
+	done
+	for (( i = 90; i <= 107; i++ )); do
+		color=${i}
+		echo -e "${i} \033[${color}m(Error)\033[m"
+	done
+}
+
+error_print(){
+	echo -e "\033[91;1m(Error)\033[m $@"
+}
+
+warnning_print(){
+	echo -e "\033[93;1m(Warnning)\033[m $@"
+}
+
+error_log(){
+	echo -e "`date "+[%Y.%m.%d %H:%M:%S]"` \033[91;1m(Error)\033[m $@"
+}
+
+warnning_log(){
+	echo -e "`date "+[%Y.%m.%d %H:%M:%S]"` \033[93;1m(Warnning)\033[m $@"
+}
+
+register_to_bin(){
+	tmp_file_path=${1}
+	cp /dev/null ${tmp_file_path}
+
+	if [ -z "${tmpfile_list}" ]; then
+		tmpfile_list="${tmp_file_path} "
+	else
+		tmpfile_list="${tmpfile_list}${tmp_file_path} "
+	fi
+}
+
+empty_bin(){
+	for tmp_file_path in ${tmpfile_list}
+	do
+		if [ -f "${tmp_file_path}" ]; then
+			rm ${tmp_file_path}
+		fi
+	done
+}
+
+echo ".tools sourcing!!"

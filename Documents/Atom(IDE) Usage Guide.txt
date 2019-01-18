@@ -1,0 +1,52 @@
+# 단축키
+환경설정 : Ctrl + ,
+커멘트 라인 : Ctrl + Shift + P
+같은 단어 선택 : Ctrl + D
+파일 찾기 : Ctrl + p
+현재 파일에서 찾기 : Ctrl + f
+프로젝트에서 찾기 : Ctrl + Shift + F
+
+
+# 유용한 패키지
+project-manager
+language-vue
+
+minimap
+https://atom.io/packages/minima
+작업중인 파일에 대한 미니맵 제공, 미니맵은 미니맵에 diff표시, 선택영역 하이라이트등 다양한 플러그인이 있지만 그닥 유용하지 않아
+해당 플러그인만 사용중. 미니맵을 드래그하여 페이지 상하 이동이 가능하여 긴 내용의 코드 작성시 유용하다.
+minimap-highlight-selected
+
+emmet
+https://atom.io/packages/emmet
+흔히 젠코딩이라 불리는 플러그인이다. 손가락 관절에 무리를 줄여주고 커피시간을 벌어주는 편리한 플러그인.
+
+atom-beautify
+https://atom.io/packages/atom-beautify
+HTML, CSS, JavaScript, PHP, Python, Ruby, Java, C, C++, C#, Objective-C, CoffeeScript, TypeScript 등의 코드를 아릅답게 정렬해 주는기능
+
+docblockr
+https://atom.io/packages/docblockr
+메소드 작성 완료 후 윗라인에 “/**”을 치고 엔터를 치면 함수명, 파라미터명, 리턴타입등 깔끔한 주석 포멧을 제공해준다.
+설명과 파라미터, 리턴타입등에 대한 추가 정보만 입력하면 된다. javascript 외에도 많은 언어를 지원한다.
+
+seti-icon
+https://atom.io/packages/seti-icons
+아톰 아이콘 패키지로 개인취향이다. 해당 아이콘팩에 아톰 style.less를 조금 수정하여 사용한다.
+참고로 다운로드 수는 file-icons(https://atom.io/packages/file-icons)가 20배이상 높다
+
+color-picker
+https://atom.io/packages/color-picker
+컬러피커로 rgb, rgba, hex등 다양한 색상값을 바로 얻을 수 있다.
+
+code-peek
+https://atom.io/packages/code-peek
+선택한 함수가 정의되어 있는 파일을 자동으로 열어 대조해준다. (이클립스의 Alt+마우스 왼쪽 클릭 과 동일한 기능)
+
+remote-ftp
+https://atom.io/packages/remote-ftp
+Atom에서 FTP/FTPS/SFTP 사용을 가능하게 하는 패키지입니다. 트리뷰에 다른 탭으로 생기기 때문에 아주 편하게 사용할 수 있습니다. 이미지는 좀 오래 된 이미지네요.
+
+set-syntax
+https://atom.io/packages/set-syntax
+현재 파일의 구문을 설정하기위한 쉬운 명령 팔레트 명령을 작성합니다.

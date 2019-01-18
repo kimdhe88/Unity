@@ -204,6 +204,72 @@ $ DEBUG=backend:* npm start
 http://192.168.10.101:3000/
 
 
+04. Vue 프로젝트와 Express 프로젝트를 연동하기
+- Vue 프로젝트를 webpack으로 빌드할때 그 경로를 backend로 전달하기
+- Vue 프로젝트를 webpack으로 빌드할때 그 결과물을 frontend 폴더가 아닌, express의 backend 폴더의 public으로 바꿔 보자.
+
+- ${PROJECT_HOME}/frontend 폴더의 ${PROJECT_HOME}/frontend/config/index.js 파일을 열어 build 영역을 다음과 같이 수정하자.
+$ vi ${PROJECT_HOME}/frontend/config/index.js
+--------------------------------------------------
+build: {
+    // Template for index.html
+    //index: path.resolve(__dirname, '../dist/index.html'),   기존에 있는 것을 주석처리
+    index: path.resolve(__dirname, '../../backend/public/index.html'),  //수정되는 부분이다.
+
+    // Paths
+    //assetsRoot: path.resolve(__dirname, '../dist'),  기존에 잇는 것을 주석처리
+    assetsRoot: path.resolve(__dirname, '../../backend/public'),   // 수정되는 부분이다.
+    assetsSubDirectory: 'static',
+    assetsPublicPath: '/',
+--------------------------------------------------
+
+- ${PROJECT_HOME}/frontend 폴더로 이동하여 build 후 결과가 ${PROJECT_HOME}/backend/public 으로 잘 들어가는지 확인.
+$ cd ${PROJECT_HOME}/frontend
+$ npm run build
+$ cd ${PROJECT_HOME}/backend/public
+
+
+05. Express 프로젝트에서 rounter수정하여 vue router연결
+-  ${PROJECT_HOME}/backend/routes/index.js 파일을 다음과 같이 수정.
+$ vi ${PROJECT_HOME}/backend/routes/index.js
+----------------------------------------------------
+var express = require('express');
+var path = require('path');
+var router = express.Router();
+
+router.get('/', function (req, res, next) {
+  res.sendFile(path.join(__dirname, '../public', 'index.html'))
+});
+
+module.exports = router;
+----------------------------------------------------
+
+- Vue router를 Node+Express 웹서버에 연동하는 설정이 필요하다.
+# https://router.vuejs.org/kr/guide/essentials/history-mode.html#%EC%84%9C%EB%B2%84-%EC%84%A4%EC%A0%95-%EC%98%88%EC%A0%9C
+
+- vue router와 express연동을 위해 express에 connect-history-api-fallback라는 모듈이 필요하다.
+- ${PROJECT_HOME}/backend 폴더로 이동하여 connect-history-api-fallback울 설치하자
+
+$ cd ${PROJECT_HOME}/backend
+$ npm install connect-history-api-fallback -save
+
+- 그리고 ${PROJECT_HOME}/backend/app.js 파일에 connect-history-api-fallback 모듈을 등록하자.
+$ vi ${PROJECT_HOME}/backend/app.js
+---------------------------------------------------
+app.use(require('connect-history-api-fallback')());
+---------------------------------------------------
+
+- vue express 통합환경 동작 확인하기
+- vue 프로젝트의 웹서버는 이제 필요 없으니 종료하자.
+
+- ${PROJECT_HOME}/backend 폴더에 진입해서 DEBUG=backend:* npm start 를 입력하여, express 를 실행하자.
+$ cd ${PROJECT_HOME}/backend
+$ DEBUG=backend:* npm start
+
+- http://192.168.10.101:3000
+- http://192.168.10.101:3000/loginPage
+
+
 
 
 
