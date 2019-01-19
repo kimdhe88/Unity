@@ -1,0 +1,49 @@
+if [ -z "${toolsPath}" ];then
+  echo "\033[91;1m(toolsPath)\033[m is not declared."
+  exit
+else
+  source ${toolsPath}
+fi
+
+init(){
+  profileName=${1}
+  if [ -z "${profileName}" ]; then
+    error_print "Please enter a profile to activate."
+    return ${error}
+  fi
+
+  nodePath=${customProfileDirectory}/node/${profileName}
+
+  if [ ! -d "${nodePath}" ]; then
+    error_print "${profileName} profile is not in the list."
+    return ${error}
+  fi
+
+  return ${success}
+}
+
+enableReplace(){
+  enablePath=${nodePath}/enable
+  printf "1" > ${enablePath}
+
+  if [ ! -f ${enablePath} ]; then
+    error_print "The enable file creation failed."
+    return ${error}
+  fi
+
+  currentStatus=$(cat ${enablePath})
+
+  if [ ${currentStatus} -ne "1" ];then
+    error_print "${profileName} profile activation failed."
+    return ${error}
+  fi
+
+  return ${success}
+}
+
+main(){
+   function_call init ${1}
+   function_call enableReplace
+}
+
+main ${1}

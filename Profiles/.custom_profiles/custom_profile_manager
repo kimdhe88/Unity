@@ -1,9 +1,11 @@
-scriptName=$(basename ${0})
-customProfileDirectory="$(dirname -- "$(readlink -f -- "${0}")")"
-toolsPath=${customProfileDirectory}/.tools
-export customProfileDirectory toolsPath
-source ${toolsPath}
+source $(dirname -- "$(readlink -f -- "${0}")")/.env.sh
 
-testfunction(){
-  sh ${customProfileDirectory}/.$(basename ${0}).testfunction
+cpm_module=${customProfileDirectory}/.custom_profile_manager
+
+profilestatus(){
+  sh ${cpm_module}.profilestatus
+}
+
+useprofile(){
+  sh ${cpm_module}.useprofile
 }

@@ -1,0 +1,46 @@
+if [ -z "${toolsPath}" ];then
+  echo "\033[91;1m(toolsPath)\033[m is not declared."
+  exit
+else
+  source ${toolsPath}
+fi
+
+init(){
+  nodePath=${customProfileDirectory}/node
+  profileNodes=$(ls ${nodePath})
+
+  return ${success}
+}
+
+profileEnableCheck(){
+  printf "\nShows the current active profile.\n\n"
+
+  for node in ${profileNodes};do
+    if [ ! -f "${nodePath}/${node}/enable" ]; then
+      error_print "no such directory [ ${nodePath}/${node}/enable ]"
+      return ${error}
+    fi
+    enableStatus=$(cat ${nodePath}/${node}/enable)
+
+    if [ -z "${enableStatus}" ];then
+      error_print "Failed to get the status of node [${node}]"
+      return ${error}
+    fi
+
+    if [ ${enableStatus} -eq "1" ];then
+      printf "[*] %20s\n" "${node}"
+    else
+      printf "[ ] %20s\n" "${node}"
+    fi
+  done
+  echo ""
+
+  return ${success}
+}
+
+main(){
+   function_call init
+   function_call profileEnableCheck
+}
+
+main
