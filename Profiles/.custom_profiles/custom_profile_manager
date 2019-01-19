@@ -2,10 +2,14 @@ source $(dirname -- "$(readlink -f -- "${0}")")/.env.sh
 
 cpm_module=${customProfileDirectory}/.custom_profile_manager
 
-profilestatus(){
-  sh ${cpm_module}.profilestatus
+profilelist(){
+  sh ${cpm_module}.profilelist
 }
 
-useprofile(){
-  sh ${cpm_module}.useprofile
+enableprofile(){
+  sh ${cpm_module}.enableprofile ${1}
+}
+
+disableprofile(){
+  sh ${cpm_module}.disableprofile ${1}
 }

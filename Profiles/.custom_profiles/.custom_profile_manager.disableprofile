@@ -8,7 +8,7 @@ fi
 init(){
   profileName=${1}
   if [ -z "${profileName}" ]; then
-    error_print "Please enter a profile to activate."
+    error_print "Enter the profile name you want to disable."
     return ${error}
   fi
 
@@ -24,17 +24,17 @@ init(){
 
 enableReplace(){
   enablePath=${nodePath}/enable
-  printf "1" > ${enablePath}
+  printf "0" > ${enablePath}
 
   if [ ! -f ${enablePath} ]; then
-    error_print "The enable file creation failed."
+    error_print "The status file creation failed."
     return ${error}
   fi
 
   currentStatus=$(cat ${enablePath})
 
-  if [ ${currentStatus} -ne "1" ];then
-    error_print "${profileName} profile activation failed."
+  if [ ${currentStatus} -ne "0" ];then
+    error_print "${profileName} profile disabled failed."
     return ${error}
   fi
 
@@ -44,6 +44,10 @@ enableReplace(){
 main(){
    function_call init ${1}
    function_call enableReplace
+
+   echo ""
+   echo "[${profileName}] profile has been disabled."
+   echo ""
 }
 
 main ${1}

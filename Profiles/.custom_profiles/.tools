@@ -6,13 +6,13 @@ error=2
 # functions
 function_call(){
 	functionName=${1}
-	${functionName};rstcode=$?
+	${functionName} ${@:2};rstcode=$?
 	case ${rstcode} in
 		${warnning} )
-			warnning_print "\033[92;1m${functionName}\033[m function sent a warning."
+			echo -e "           \033[92;1m${functionName}\033[m function sent a warning."
 			;;
 		${error} )
-			error_print "An error occurred in the \033[92;1m${functionName}\033[m function."
+			echo -e "        An error occurred in the \033[92;1m${functionName}\033[m function."
 			exit
 			;;
 	esac
