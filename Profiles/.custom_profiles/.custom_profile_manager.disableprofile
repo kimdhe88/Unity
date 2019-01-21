@@ -14,16 +14,14 @@ init(){
 }
 
 disableProfile(){
-
-  cfgLineNumber=`awk -F"=" '{if($1=="'${profileName}'"){print NR}}' ${customConfig}`
-  if [ -z "${cfgLineNumber}" ];then
+  ep_isExist=$(getConfig ${profileName} ${customConfig})
+  if [ -z "${ep_isExist}" ]; then
     warnning_print "[${profileName}] is not found"
     return ${error}
-  else
-    sed -i "${cfgLineNumber}s/enable/disable/g" ${customConfig}
   fi
+  putConfig ${profileName} "disable" ${customConfig}
 
-  if [ "$(get_config_info ${profileName} ${customConfig})" != "disable" ];then
+  if [ "$(getConfig ${profileName} ${customConfig})" != "disable" ];then
     error_print "${profileName} profile disable failed."
     return ${error}
   fi

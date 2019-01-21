@@ -17,6 +17,37 @@ get_config_info()
 	fi
 }
 
+getConfig()
+{
+	gc_configName=${1}
+	gc_configFile=${2}
+
+	if [ -f "${gc_configFile}" -a ! -z "${gc_configName}" ]; then
+		gc_configValues=$(awk -F"=" '{if($1=="'${gc_configName}'"){print $2}}' ${gc_configFile})
+		echo ${gc_configValues}
+	else
+		echo ""
+	fi
+}
+
+putConfig()
+{
+	pc_configName=${1}
+	pc_configValues=${2}
+	pc_configFile=${3}
+
+	if [ -f "${pc_configFile}" -a ! -z "${pc_configName}" ]; then
+		pc_cfgLine=$(awk -F"=" '{if($1=="'${pc_configName}'"){print NR}}' ${pc_configFile})
+		if [ -z "${pc_cfgLine}" ];then
+			echo "${pc_configName}=${pc_configValues}" >> ${pc_configFile}
+		else
+			pc_prevValues=$(getConfig ${pc_configName} ${pc_configFile})
+			sed -i "${pc_cfgLine}s/${pc_prevValues}/${pc_configValues}/g" ${pc_configFile}
+		fi
+	fi
+}
+
+
 put_config_info()
 {
 	pci_conf_name=`echo "${1}" | tr -d " "`

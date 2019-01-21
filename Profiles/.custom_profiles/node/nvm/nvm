@@ -1,36 +1,29 @@
+customProfileHome=${HOME}/.custom_profiles
+customConfig=${customProfileHome}/.custom_profiles.cfg
+toolsPath=${customProfileHome}/.tools
+source ${toolsPath}
+
 export NVM_DIR="$HOME/.nvm"
 
-Excutable()
-{
-  command -v "$1" >/dev/null 2>&1
-}
-
-GetVersions(){
+nvm_getVersions(){
   nodeVersions=`node -v`
   npmVersions=`npm -v`
 }
 
-ViewVersions(){
+nvm_showVersions(){
 	echo "node.js version : ${nodeVersions}"
 	echo "npm version : ${npmVersions}"
 }
 
-Main(){
-  if Excutable nvm;then
-    ViewVersions
+nvm_main(){
+  if excutable nvm;then
+    nvm_showVersions
   else
     [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
     [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-    GetVersions
-    ViewVersions
+    nvm_getVersions
+    nvm_showVersions
   fi
 }
 
-viewnodes(){
-  versionList=`ls ${NVM_DIR}/versions/node`
-  for version in ${versionList};do
-    echo "${version}"
-  done
-}
-
-Main
+nvm_main

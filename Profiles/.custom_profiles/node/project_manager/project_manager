@@ -1,1 +1,7 @@
+customProfileHome=${HOME}/.custom_profiles
+customConfig=${customProfileHome}/.custom_profiles.cfg
+toolsPath=${customProfileHome}/.tools
+source ${toolsPath}
 
+pmHome=${customProfileHome}/node/project_manager
+pmConfig=${customProfileHome}/node/project_manager/.project_manager.cfg
