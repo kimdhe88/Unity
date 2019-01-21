@@ -1,3 +1,3 @@
-customProfileDirectory=${HOME}/.custom_profiles
-toolsPath=${customProfileDirectory}/.tools
-export customProfileDirectory toolsPath
+customProfileHome=${HOME}/.custom_profiles
+toolsPath=${customProfileHome}/.tools
+export customProfileHome toolsPath

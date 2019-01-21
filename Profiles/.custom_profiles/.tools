@@ -4,6 +4,36 @@ warnning=1
 error=2
 
 # functions
+get_config_info()
+{
+	gci_conf_name=`echo "${1}" | tr -d " "`
+	gci_conf_file=${2}
+
+	if [ -f "${gci_conf_file}" -a ! -z "${gci_conf_name}" ]; then
+		gci_conf_values=`grep "^${gci_conf_name}" ${gci_conf_file} | awk 'BEGIN{FS="="}{print $2}'`
+		echo $gci_conf_values
+	else
+		echo ""
+	fi
+}
+
+put_config_info()
+{
+	pci_conf_name=`echo "${1}" | tr -d " "`
+	pci_conf_val=${2}
+	pci_conf_file=${3}
+
+	if [ -f "${pci_conf_file}" -a ! -z "${pci_conf_name}" ]; then
+		pci_cont_line_num=`awk 'BEGIN{FS="="} { if($1=="'${pci_conf_name}'") {print NR} }' ${pci_conf_file}`
+		if [ -z "${pci_cont_line_num}" ]; then
+			echo "${pci_conf_name}=${pci_conf_val}" >> ${pci_conf_file}
+		else
+			sed -i ${pci_cont_line_num}d ${pci_conf_file}
+			echo "${pci_conf_name}=${pci_conf_val}" >> ${pci_conf_file}
+		fi
+	fi
+}
+
 function_call(){
 	functionName=${1}
 	${functionName} ${@:2};rstcode=$?

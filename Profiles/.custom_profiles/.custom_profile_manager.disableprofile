@@ -1,9 +1,6 @@
-if [ -z "${toolsPath}" ];then
-  echo "\033[91;1m(toolsPath)\033[m is not declared."
-  exit
-else
-  source ${toolsPath}
-fi
+customProfileHome=${HOME}/.custom_profiles
+toolsPath=${customProfileHome}/.tools
+source ${toolsPath}
 
 init(){
   profileName=${1}
@@ -11,8 +8,7 @@ init(){
     error_print "Enter the profile name you want to disable."
     return ${error}
   fi
-
-  nodePath=${customProfileDirectory}/node/${profileName}
+  nodePath=${customProfileHome}/node/${profileName}
 
   if [ ! -d "${nodePath}" ]; then
     error_print "${profileName} profile is not in the list."

@@ -1,12 +1,9 @@
-if [ -z "${toolsPath}" ];then
-  echo "\033[91;1m(toolsPath)\033[m is not declared."
-  exit
-else
-  source ${toolsPath}
-fi
+customProfileHome=${HOME}/.custom_profiles
+toolsPath=${customProfileHome}/.tools
+source ${toolsPath}
 
 init(){
-  nodePath=${customProfileDirectory}/node
+  nodePath=${customProfileHome}/node
   profileNodes=$(ls ${nodePath})
 
   return ${success}
