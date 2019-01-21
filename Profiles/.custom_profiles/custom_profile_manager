@@ -1,6 +1,5 @@
 #source $(dirname -- "$(readlink -f -- "${0}")")/.env.sh
 source ${HOME}/.custom_profiles/.env.sh
-echo "${HOME}/.custom_profiles/.env.sh"
 cpm_module=${customProfileHome}/.custom_profile_manager
 
 profilelist(){
@@ -15,25 +14,18 @@ disableprofile(){
   sh ${cpm_module}.disableprofile ${1}
 }
 
-init(){
-  nodePath=${customProfileHome}/node
-  profileNodes=$(ls ${nodePath})
-}
-
 main(){
-  init
-
-  for node in ${profileNodes};do
-    echo "node : ${node}"
-    nodeHome=${nodePath}/${node}
-    echo "nodeHome : ${nodeHome}"
-    enableState=`cat ${nodeHome}/enable`
-    echo "enableState : ${enableState}"
-    if [ ${enableState} -eq "1" ];then
-      source ${nodeHome}/${node}
-      echo "execute :  ${nodeHome}/${node}"
+  while read cfgLine
+  do
+    node=`echo ${cfgLine} | awk 'BEGIN{FS="="}{print $1}'`
+    nodeStatus=`echo ${cfgLine} | awk 'BEGIN{FS="="}{print $2}'`
+    echo "nodeStatus : ${nodeStatus}"
+    if [ "${nodeStatus}" = "enable" ];then
+      echo "* ${node} Apply the profile."
+      echo ""
+      source ${customProfileHome}/node/${node}/${node}
     fi
-  done
+  done < ${HOME}/.custom_profiles/.custom_profiles.cfg
 }
 
 main

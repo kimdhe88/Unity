@@ -1,0 +1,25 @@
+customProfileHome=${HOME}/.custom_profiles
+toolsPath=${customProfileHome}/.tools
+source ${toolsPath}
+
+init(){
+  profileNodes=`awk 'BEGIN{FS="="}{print $1}'``
+
+  return ${success}
+}
+
+executeEnables(){
+  for node in ${profileNodes};
+  do
+    echo "node : ${node}"
+  done
+
+  return ${success}
+}
+
+main(){
+  function_call init
+  function_call executeEnables
+}
+
+main
