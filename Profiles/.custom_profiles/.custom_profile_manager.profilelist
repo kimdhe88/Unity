@@ -1,4 +1,5 @@
 customProfileHome=${HOME}/.custom_profiles
+customConfig=${HOME}/.custom_profiles/.custom_profiles.cfg
 toolsPath=${customProfileHome}/.tools
 source ${toolsPath}
 
@@ -9,27 +10,20 @@ init(){
   return ${success}
 }
 
-profileEnableCheck(){
+profileStatus(){
   printf "\nShows the current active profile.\n\n"
 
-  for node in ${profileNodes};do
-    if [ ! -f "${nodePath}/${node}/enable" ]; then
-      error_print "no such directory [ ${nodePath}/${node}/enable ]"
-      return ${error}
-    fi
-    enableStatus=$(cat ${nodePath}/${node}/enable)
+  while read cfgLine
+  do
+    node=`echo ${cfgLine} | awk 'BEGIN{FS="="}{print $1}'`
+    nodeStatus=`echo ${cfgLine} | awk 'BEGIN{FS="="}{print $2}'`
 
-    if [ -z "${enableStatus}" ];then
-      error_print "Failed to get the status of node [${node}]"
-      return ${error}
-    fi
-
-    if [ ${enableStatus} -eq "1" ];then
+    if [ "${nodeStatus}" = "enable" ];then
       printf "[*] %20s\n" "${node}"
     else
       printf "[ ] %20s\n" "${node}"
     fi
-  done
+  done < ${customConfig}
   echo ""
 
   return ${success}
@@ -37,7 +31,7 @@ profileEnableCheck(){
 
 main(){
    function_call init
-   function_call profileEnableCheck
+   function_call profileStatus
 }
 
 main

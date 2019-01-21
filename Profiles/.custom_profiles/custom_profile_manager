@@ -1,5 +1,8 @@
 #source $(dirname -- "$(readlink -f -- "${0}")")/.env.sh
-source ${HOME}/.custom_profiles/.env.sh
+customProfileHome=${HOME}/.custom_profiles
+customConfig=${customProfileHome}/.custom_profiles.cfg
+toolsPath=${customProfileHome}/.tools
+
 cpm_module=${customProfileHome}/.custom_profile_manager
 
 profilelist(){
@@ -19,13 +22,12 @@ main(){
   do
     node=`echo ${cfgLine} | awk 'BEGIN{FS="="}{print $1}'`
     nodeStatus=`echo ${cfgLine} | awk 'BEGIN{FS="="}{print $2}'`
-    echo "nodeStatus : ${nodeStatus}"
     if [ "${nodeStatus}" = "enable" ];then
       echo "* ${node} Apply the profile."
       echo ""
       source ${customProfileHome}/node/${node}/${node}
     fi
-  done < ${HOME}/.custom_profiles/.custom_profiles.cfg
+  done < ${customConfig}
 }
 
 main

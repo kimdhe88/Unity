@@ -1,4 +1,5 @@
 customProfileHome=${HOME}/.custom_profiles
+customConfig=${HOME}/.custom_profiles/.custom_profiles.cfg
 toolsPath=${customProfileHome}/.tools
 source ${toolsPath}
 
@@ -8,29 +9,22 @@ init(){
     error_print "Enter the profile name you want to disable."
     return ${error}
   fi
-  nodePath=${customProfileHome}/node/${profileName}
-
-  if [ ! -d "${nodePath}" ]; then
-    error_print "${profileName} profile is not in the list."
-    return ${error}
-  fi
 
   return ${success}
 }
 
-enableReplace(){
-  enablePath=${nodePath}/enable
-  printf "0" > ${enablePath}
+disableProfile(){
 
-  if [ ! -f ${enablePath} ]; then
-    error_print "The status file creation failed."
+  cfgLineNumber=`awk -F"=" '{if($1=="'${profileName}'"){print NR}}' ${customConfig}`
+  if [ -z "${cfgLineNumber}" ];then
+    warnning_print "[${profileName}] is not found"
     return ${error}
+  else
+    sed -i "${cfgLineNumber}s/enable/disable/g" ${customConfig}
   fi
 
-  currentStatus=$(cat ${enablePath})
-
-  if [ ${currentStatus} -ne "0" ];then
-    error_print "${profileName} profile disabled failed."
+  if [ "$(get_config_info ${profileName} ${customConfig})" != "disable" ];then
+    error_print "${profileName} profile disable failed."
     return ${error}
   fi
 
@@ -39,10 +33,11 @@ enableReplace(){
 
 main(){
    function_call init ${1}
-   function_call enableReplace
+   function_call disableProfile
 
    echo ""
-   echo "[${profileName}] profile has been disabled."
+   echo "* [${profileName}] profile has been disabled."
+   echo "* Please reconnect the shell to apply the profile."
    echo ""
 }
 
