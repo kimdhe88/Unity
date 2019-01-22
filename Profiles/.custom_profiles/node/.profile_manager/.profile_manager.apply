@@ -1,0 +1,25 @@
+customHome=${HOME}/.custom_profiles
+customConfig=${customHome}/.custom_profiles.cfg
+toolsPath=${customHome}/.tools
+source ${toolsPath}
+
+applyProfile(){
+  while read cfgLine
+  do
+    node=`echo ${cfgLine} | awk 'BEGIN{FS="="}{print $1}'`
+    nodeStatus=`echo ${cfgLine} | awk 'BEGIN{FS="="}{print $2}'`
+    if [ "${nodeStatus}" = "enable" ];then
+      echo "* ${node} Apply the profile."
+      echo ""
+      source ${customHome}/node/${node}/${node}
+    fi
+  done < ${customConfig}
+
+  return ${success}
+}
+
+main(){
+   function_call applyProfile
+}
+
+main

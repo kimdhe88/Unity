@@ -1,0 +1,42 @@
+customHome=${HOME}/.custom_profiles
+customConfig=${customHome}/.custom_profiles.cfg
+toolsPath=${customHome}/.tools
+source ${toolsPath}
+
+init(){
+  profileName=${1}
+  if [ -z "${profileName}" ]; then
+    error_print "Enter the profile name you want to enable."
+    return ${error}
+  fi
+
+  return ${success}
+}
+
+enableProfile(){
+  ep_isExist=$(getConfig ${profileName} ${customConfig})
+  if [ -z "${ep_isExist}" ]; then
+    warnning_print "[${profileName}] is not found"
+    return ${error}
+  fi
+  putConfig ${profileName} "enable" ${customConfig}
+
+  if [ "$(getConfig ${profileName} ${customConfig})" != "enable" ];then
+    error_print "${profileName} profile enable failed."
+    return ${error}
+  fi
+
+  return ${success}
+}
+
+main(){
+   function_call init ${1}
+   function_call enableProfile
+
+   echo ""
+   echo "* [${profileName}] profile has been enabled."
+   echo "* Please reconnect the shell to apply the profile."
+   echo ""
+}
+
+main ${1}

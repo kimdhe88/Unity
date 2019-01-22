@@ -1,0 +1,19 @@
+customHome=${HOME}/.custom_profiles
+customConfig=${customHome}/.custom_profiles.cfg
+toolsPath=${customHome}/.tools
+source ${toolsPath}
+
+pfm_module=${customHome}/node/.profile_manager/.profile_manager
+echo "profile_manager loaded"
+
+pfm_main(){
+  cmd=${1}
+  argc=${@:2}
+  case ${cmd} in
+
+    apply) source ${pfm_module}.apply ;;
+    enable) sh ${pfm_module}.enable ${argc};;
+    disable) sh ${pfm_module}.disable ${argc};;
+    list) sh ${pfm_module}.list ;;
+  esac
+}

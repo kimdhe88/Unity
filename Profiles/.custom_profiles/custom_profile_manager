@@ -6,7 +6,7 @@ cpm_module=${customProfileHome}/.custom_profile_manager
 
 cpm_Usage(){
   echo ""
-  echo "Usgae : customprofile [OPTION] .. [PROFILE]"
+  echo "Usgae : custom [OPTION] .. [PROFILE]"
   echo ""
   echo -e "\033[1mOPTION\033[m"
   printf "%10s%-10s%s\n" "" "[list]"
@@ -19,39 +19,12 @@ cpm_Usage(){
   printf "%20s%s\n\n" "" "- Disable the profile. You must run the apply option to apply."
 }
 
-cpm_profilelist(){
-  sh ${cpm_module}.profilelist
-}
-
-cpm_enableprofile(){
-  sh ${cpm_module}.enableprofile ${1}
-}
-
-cpm_disableprofile(){
-  sh ${cpm_module}.disableprofile ${1}
-}
-
-cpm_applyProfiles(){
-  while read cfgLine
-  do
-    node=`echo ${cfgLine} | awk 'BEGIN{FS="="}{print $1}'`
-    nodeStatus=`echo ${cfgLine} | awk 'BEGIN{FS="="}{print $2}'`
-    if [ "${nodeStatus}" = "enable" ];then
-      echo "* ${node} Apply the profile."
-      echo ""
-      source ${customProfileHome}/node/${node}/${node}
-    fi
-  done < ${customConfig}
-}
-
-customprofile(){
+custom(){
   cmd=${1}
   argc=${@:2}
   case ${cmd} in
-    apply) cpm_applyProfiles ;;
-    enable) cpm_enableprofile ${argc};;
-    disable) cpm_disableprofile ${argc};;
-    list) cpm_profilelist ;;
+    init) source ${cpm_module}.apply ;;
+    profile) pfm_main ${argc} ;;
     *) cpm_Usage ;;
   esac
 }

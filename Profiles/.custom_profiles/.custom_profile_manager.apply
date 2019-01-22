@@ -1,0 +1,15 @@
+customHome=${HOME}/.custom_profiles
+customConfig=${customHome}/.custom_profiles.cfg
+toolsPath=${customHome}/.tools
+source ${toolsPath}
+
+apply(){
+  source ${customHome}/node/.profile_manager/profile_manager
+  echo "profile_manager"
+}
+
+main(){
+   function_call apply
+}
+
+main

@@ -4,19 +4,6 @@ warnning=1
 error=2
 
 # functions
-get_config_info()
-{
-	gci_conf_name=`echo "${1}" | tr -d " "`
-	gci_conf_file=${2}
-
-	if [ -f "${gci_conf_file}" -a ! -z "${gci_conf_name}" ]; then
-		gci_conf_values=`grep "^${gci_conf_name}" ${gci_conf_file} | awk 'BEGIN{FS="="}{print $2}'`
-		echo $gci_conf_values
-	else
-		echo ""
-	fi
-}
-
 getConfig()
 {
 	gc_configName=${1}
@@ -47,6 +34,77 @@ putConfig()
 	fi
 }
 
+functionCall(){
+	functionName=${1}
+	${functionName} ${@:2};rstcode=$?
+	case ${rstcode} in
+		${warnning} )
+			echo -e "           \033[92;1m${functionName}\033[m function sent a warning."
+			;;
+		${error} )
+			echo -e "        An error occurred in the \033[92;1m${functionName}\033[m function."
+			exit
+			;;
+	esac
+}
+
+
+
+showcolor(){
+	for (( i = 1; i <= 9; i++ )); do
+		color=${i}
+		echo -e "${i} \033[${color}m(Error)\033[m"
+	done
+	for (( i = 30; i <= 47; i++ )); do
+		color=${i}
+		echo -e "${i} \033[${color}m(Error)\033[m"
+	done
+	for (( i = 90; i <= 107; i++ )); do
+		color=${i}
+		echo -e "${i} \033[${color}m(Error)\033[m"
+	done
+}
+
+error_print(){
+	echo -e "\033[91;1m(Error)\033[m $@"
+}
+
+warnning_print(){
+	echo -e "\033[93;1m(Warnning)\033[m $@"
+}
+
+error_log(){
+	echo -e "`date "+[%Y.%m.%d %H:%M:%S]"` \033[91;1m(Error)\033[m $@"
+}
+
+warnning_log(){
+	echo -e "`date "+[%Y.%m.%d %H:%M:%S]"` \033[93;1m(Warnning)\033[m $@"
+}
+
+excutable()
+{
+  command -v "$1" >/dev/null 2>&1
+}
+
+register_to_bin(){
+	tmp_file_path=${1}
+	cp /dev/null ${tmp_file_path}
+
+	if [ -z "${tmpfile_list}" ]; then
+		tmpfile_list="${tmp_file_path} "
+	else
+		tmpfile_list="${tmpfile_list}${tmp_file_path} "
+	fi
+}
+
+empty_bin(){
+	for tmp_file_path in ${tmpfile_list}
+	do
+		if [ -f "${tmp_file_path}" ]; then
+			rm ${tmp_file_path}
+		fi
+	done
+}
 
 put_config_info()
 {
@@ -81,6 +139,19 @@ replace_config_info()
 	fi
 }
 
+get_config_info()
+{
+	gci_conf_name=`echo "${1}" | tr -d " "`
+	gci_conf_file=${2}
+
+	if [ -f "${gci_conf_file}" -a ! -z "${gci_conf_name}" ]; then
+		gci_conf_values=`grep "^${gci_conf_name}" ${gci_conf_file} | awk 'BEGIN{FS="="}{print $2}'`
+		echo $gci_conf_values
+	else
+		echo ""
+	fi
+}
+
 function_call(){
 	functionName=${1}
 	${functionName} ${@:2};rstcode=$?
@@ -93,60 +164,4 @@ function_call(){
 			exit
 			;;
 	esac
-}
-
-showcolor(){
-	for (( i = 1; i <= 9; i++ )); do
-		color=${i}
-		echo -e "${i} \033[${color}m(Error)\033[m"
-	done
-	for (( i = 30; i <= 47; i++ )); do
-		color=${i}
-		echo -e "${i} \033[${color}m(Error)\033[m"
-	done
-	for (( i = 90; i <= 107; i++ )); do
-		color=${i}
-		echo -e "${i} \033[${color}m(Error)\033[m"
-	done
-}
-
-error_print(){
-	echo -e "\033[91;1m(Error)\033[m $@"
-}
-
-warnning_print(){
-	echo -e "\033[93;1m(Warnning)\033[m $@"
-}
-
-error_log(){
-	echo -e "`date "+[%Y.%m.%d %H:%M:%S]"` \033[91;1m(Error)\033[m $@"
-}
-
-warnning_log(){
-	echo -e "`date "+[%Y.%m.%d %H:%M:%S]"` \033[93;1m(Warnning)\033[m $@"
-}
-
-register_to_bin(){
-	tmp_file_path=${1}
-	cp /dev/null ${tmp_file_path}
-
-	if [ -z "${tmpfile_list}" ]; then
-		tmpfile_list="${tmp_file_path} "
-	else
-		tmpfile_list="${tmpfile_list}${tmp_file_path} "
-	fi
-}
-
-empty_bin(){
-	for tmp_file_path in ${tmpfile_list}
-	do
-		if [ -f "${tmp_file_path}" ]; then
-			rm ${tmp_file_path}
-		fi
-	done
-}
-
-excutable()
-{
-  command -v "$1" >/dev/null 2>&1
 }

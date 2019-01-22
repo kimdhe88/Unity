@@ -1,0 +1,37 @@
+customHome=${HOME}/.custom_profiles
+customConfig=${customHome}/.custom_profiles.cfg
+toolsPath=${customHome}/.tools
+source ${toolsPath}
+
+init(){
+  nodePath=${customHome}/node
+  profileNodes=$(ls ${nodePath})
+
+  return ${success}
+}
+
+profileStatus(){
+  printf "\nShows the current active profile.\n\n"
+
+  while read cfgLine
+  do
+    node=`echo ${cfgLine} | awk 'BEGIN{FS="="}{print $1}'`
+    nodeStatus=`echo ${cfgLine} | awk 'BEGIN{FS="="}{print $2}'`
+
+    if [ "${nodeStatus}" = "enable" ];then
+      printf "[*] %20s\n" "${node}"
+    else
+      printf "[ ] %20s\n" "${node}"
+    fi
+  done < ${customConfig}
+  echo ""
+
+  return ${success}
+}
+
+main(){
+   function_call init
+   function_call profileStatus
+}
+
+main
