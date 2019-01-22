@@ -13,8 +13,8 @@ custom(){
   cmd=${1}
   argc=${@:2}
   case ${cmd} in
-    profile) pfm_run ${argc} ;;
-    alias) aa_run ${argc} ;;
+    profile) pfm_run $(echo ${argc}) ;;
+    alias) aa_run $(echo ${argc}) ;;
     *) sh ${customHome}/.usage.dat ;;
   esac
 }

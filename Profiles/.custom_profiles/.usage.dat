@@ -1,3 +1,8 @@
+customHome=${HOME}/.custom_profiles
+customConfig=${customHome}/.custom_profiles.cfg
+toolsPath=${customHome}/.tools
+source ${toolsPath}
+
 Usage(){
   echo ""
   echo "Usgae : custom [OPTION] .. [SUB OPTION]"
@@ -11,10 +16,13 @@ Usage(){
   printf "%20s%s\n\n" "" "- Enable the profile. You must run the apply option to apply."
   printf "%10s%s\n" "" "[profile] [disable] [profile name]"
   printf "%20s%s\n\n" "" "- Disable the profile. You must run the apply option to apply."
-  printf "%10s%s\n" "" "[alias] [apply]"
-  printf "%20s%s\n\n" "" "- Apply alias."
-  printf "%10s%s\n" "" "[alias] [edit]"
-  printf "%20s%s\n\n" "" "- Edit the alias."
+  if [ "$(getConfig "aliases" ${customConfig})" = "enable" ];then
+    echo ""
+    printf "%10s%s\n" "" "[alias] [apply]"
+    printf "%20s%s\n\n" "" "- Apply alias."
+    printf "%10s%s\n" "" "[alias] [edit]"
+    printf "%20s%s\n\n" "" "- Edit the alias."
+  fi
 }
 
 Usage

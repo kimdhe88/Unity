@@ -14,8 +14,8 @@ pfm_run(){
   argc=${@:2}
   case ${cmd} in
     apply) source ${pfm_module}.apply ;;
-    enable) sh ${pfm_module}.enable ${argc};;
-    disable) sh ${pfm_module}.disable ${argc};;
+    enable) sh ${pfm_module}.enable $(echo ${argc});;
+    disable) sh ${pfm_module}.disable $(echo ${argc});;
     list) sh ${pfm_module}.list ;;
     *) sh ${customHome}/.usage.dat ;;
   esac

@@ -34,6 +34,19 @@ putConfig()
 	fi
 }
 
+delConfig()
+{
+	pc_configName=${1}
+	pc_configFile=${2}
+
+	if [ -f "${pc_configFile}" -a ! -z "${pc_configName}" ]; then
+		pc_cfgLine=$(awk -F"=" '{if($1=="'${pc_configName}'"){print NR}}' ${pc_configFile})
+		if [ ! -z "${pc_cfgLine}" ];then
+			sed -i ${pc_cfgLine}d ${pci_conf_file}
+		fi
+	fi
+}
+
 functionCall(){
 	functionName=${1}
 	${functionName} ${@:2};rstcode=$?
