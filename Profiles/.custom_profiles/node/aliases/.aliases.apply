@@ -1,0 +1,6 @@
+alias ..='. ~/.zshrc'
+
+alias pb='petractl start;pt_conf_manager start'
+alias pe='petractl stop;pt_conf_manager stop'
+alias pr='petractl start;pt_conf_manager start;petractl stop;pt_conf_manager stop'
+alias plog='cd $SOHA_HOME/$SOHA_SVC/log'

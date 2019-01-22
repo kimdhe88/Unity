@@ -1,6 +1,22 @@
-alias ..='. ~/.zshrc'
+customHome=${HOME}/.custom_profiles
+customConfig=${customHome}/.custom_profiles.cfg
+toolsPath=${customHome}/.tools
+source ${toolsPath}
 
-alias pb='petractl start;pt_conf_manager start'
-alias pe='petractl stop;pt_conf_manager stop'
-alias pr='petractl start;pt_conf_manager start;petractl stop;pt_conf_manager stop'
-alias plog='cd $SOHA_HOME/$SOHA_SVC/log'
+aa_module=${customHome}/node/aliases/.aliases
+
+aa_init(){
+  source ${aa_module}.apply
+}
+
+aa_run(){
+  cmd=${1}
+  argc=${@:2}
+  case ${cmd} in
+    apply) source ${aa_module}.apply ;;
+    edit) vi ${aa_module}.apply;;
+    *) sh ${customHome}/.usage.dat ;;
+  esac
+}
+
+aa_init

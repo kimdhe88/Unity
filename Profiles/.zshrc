@@ -102,6 +102,4 @@ source $ZSH/oh-my-zsh.sh
 customProfileManager=${HOME}/.custom_profiles/custom_profile_manager
 if [ -f "${customProfileManager}" ];then
   source ${customProfileManager}
-  custom init
-  custom profile apply
 fi

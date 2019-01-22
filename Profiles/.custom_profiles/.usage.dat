@@ -1,0 +1,20 @@
+Usage(){
+  echo ""
+  echo "Usgae : custom [OPTION] .. [SUB OPTION]"
+  echo ""
+  echo -e "\033[1mOPTION\033[m"
+  printf "%10s%s\n" "" "[profile] [list]"
+  printf "%20s%s\n\n" "" "- Displays the current profile list."
+  printf "%10s%s\n" "" "[profile] [apply]"
+  printf "%20s%s\n\n" "" "- Apply the currently enabled profiles."
+  printf "%10s%s\n" "" "[profile] [enable] [profile name]"
+  printf "%20s%s\n\n" "" "- Enable the profile. You must run the apply option to apply."
+  printf "%10s%s\n" "" "[profile] [disable] [profile name]"
+  printf "%20s%s\n\n" "" "- Disable the profile. You must run the apply option to apply."
+  printf "%10s%s\n" "" "[alias] [apply]"
+  printf "%20s%s\n\n" "" "- Apply alias."
+  printf "%10s%s\n" "" "[alias] [edit]"
+  printf "%20s%s\n\n" "" "- Edit the alias."
+}
+
+Usage

@@ -5,7 +5,6 @@ source ${toolsPath}
 
 apply(){
   source ${customHome}/node/.profile_manager/profile_manager
-  echo "profile_manager"
 }
 
 main(){
